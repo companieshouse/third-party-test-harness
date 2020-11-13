@@ -17,13 +17,13 @@ This is an example application of a third party app gaining an Oauth token and u
 * For CHS usage, environment variables have already been created internally to run app locally or in team environments
 
 ### Configuration:
-Variable                          | Default                                                              | Description
+Variable                          | Description                                                          | Example                                                              
 --------------------------------- | -------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-THIRD_PARTY_DUMMY_PORT            | 8090                                                                 | http://localhost:PORT
-CLIENT_ID                         | NO DEFAULT - value must be set                                       | A value you set yourself within a Mongo collection
-CLIENT_SECRET                     | NO DEFAULT - value must be set                                       | A value you set yourself within a Mongo collection
-REDIRECT_URI                      | http://localhost:8090/redirect                                       | The redirect URI after you've finished your CHS journey
-TOKEN_URI                         | https://identity.company-information.service.gov.uk/oauth2/token     | The token URI for CHS live
-PROTECTED_URI                     | https://api.company-information.service.gov.uk/company               | The protected URI for CHS live
-USER_URI                          | https://identity.company-information.service.gov.uk/user/profile     | The user URI for CHS live
-AUTHORISE_URI                     | https://identity.company-information.service.gov.uk/oauth2/authorise | The authorise URI for CHS live
+THIRD_PARTY_DUMMY_PORT            | http://localhost:PORT                                                | 8090                                                                 
+CLIENT_ID                         | A value you set yourself within a Mongo collection                   | NO DEFAULT - value must be set                                       
+CLIENT_SECRET                     | A value you set yourself within a Mongo collection                   | NO DEFAULT - value must be set 
+REDIRECT_URI                      | The redirect URI after you've finished your CHS journey              | http://localhost:8090/redirect                                       
+TOKEN_URI                         | The token URI for CHS live                                           | https://identity.company-information.service.gov.uk/oauth2/token     
+PROTECTED_URI                     | The protected URI for CHS live                                       | https://api.company-information.service.gov.uk/company               
+USER_URI                          | The user URI for CHS live                                            | https://identity.company-information.service.gov.uk/user/profile     
+AUTHORISE_URI                     | The authorise URI for CHS live                                       | https://identity.company-information.service.gov.uk/oauth2/authorise 

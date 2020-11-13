@@ -46,7 +46,3 @@ dist: clean build package
 .PHONY: sonar
 sonar:
 	mvn sonar:sonar
-#commented out until Sonar is added to project via pipeline
-#.PHONY: sonar-pr-analysis
-#sonar-pr-analysis:
-#	mvn sonar:sonar -P sonar-pr-analysis
