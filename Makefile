@@ -1,5 +1,5 @@
 artifact_name       := third-party-test-harness
-version             := "unversioned"
+version             := unversioned
 
 .PHONY: all
 all: build
@@ -46,7 +46,7 @@ dist: clean build package
 .PHONY: sonar
 sonar:
 	mvn sonar:sonar
-
-.PHONY: sonar-pr-analysis
-sonar-pr-analysis:
-	mvn sonar:sonar -P sonar-pr-analysis
+#commented out until Sonar is added to project via pipeline
+#.PHONY: sonar-pr-analysis
+#sonar-pr-analysis:
+#	mvn sonar:sonar -P sonar-pr-analysis

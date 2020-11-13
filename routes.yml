@@ -1,5 +1,0 @@
-app_name: third-party-test-harness
-group: web
-weight: 854
-routes:
-  1: /login

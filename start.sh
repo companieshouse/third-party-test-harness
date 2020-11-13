@@ -4,7 +4,8 @@
 APP_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 if [[ -z "${MESOS_SLAVE_PID}" ]]; then
-    source ~/.chs_env/proof-of-concept/env
+#removed global and private env for use only with app env
+    source ~/.chs_env/third-party-test-harness/env
 
     PORT="${THIRD_PARTY_DUMMY_PORT}"
 else
@@ -14,7 +15,7 @@ else
     APP_NAME="$4"
 
     source /etc/profile
-
+#removed global and private env for use only with app env
     echo "Downloading environment from: ${CONFIG_URL}/${ENVIRONMENT}/${APP_NAME}"
     wget -O "${APP_DIR}/app_env" "${CONFIG_URL}/${ENVIRONMENT}/${APP_NAME}/env"
     source "${APP_DIR}/app_env"
