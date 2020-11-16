@@ -5,7 +5,7 @@ A small Java web application that is used primarily for the use of karate testin
 This is an example application of a third party app gaining an Oauth token and using it for access to APIs and displaying the correct scopes.
 
 ### Requirements:
-- [Java](http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html)
+- [Java](https://www.oracle.com/java/technologies/javase-jdk11-downloads.html)
 - [Maven](https://maven.apache.org/download.cgi)
 - [Git](https://git-scm.com/downloads)
 - [MongoDB](https://www.mongodb.com)
