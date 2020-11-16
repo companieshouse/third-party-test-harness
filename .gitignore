@@ -1,15 +1,18 @@
-# Compiled class file
-*.class
-
-# Log file
-*.log
-
-# BlueJ files
-*.ctxt
-
-# Mobile Tools for Java (J2ME)
-.mtj.tmp/
-
-# Package Files #
+# Build artifacts
+target/
 *.jar
 *.zip
+
+# Eclipse files
+.classpath
+.project
+.settings
+bin/
+
+# IntelliJ files
+.idea/
+*.iml
+
+# Mac files
+.DS_Store
+._*
