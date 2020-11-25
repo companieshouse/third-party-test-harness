@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -21,6 +22,7 @@ import uk.gov.companieshouse.exception.RateExceededException;
 import uk.gov.companieshouse.model.Query;
 import uk.gov.companieshouse.model.User;
 import uk.gov.companieshouse.model.UserTokenStore;
+import uk.gov.companieshouse.model.restmodels.CompanyNumber;
 import uk.gov.companieshouse.service.ICompanyService;
 import uk.gov.companieshouse.service.IOAuthService;
 import uk.gov.companieshouse.service.IUserService;
@@ -66,8 +68,20 @@ public class ThirdPartyController {
         return "redirect:" + authoriseUri;
     }
 
+    @GetMapping(value = "/loginViaCompanyNumber")
+    public String loginViaCompanyNumber(){
+        return "loginCompanyNumber";
+    }
+
+//    @GetMapping(value = "/error")
+//    public String errorHandling(){
+//        return "login";
+//    }
+
     @GetMapping(value = "/loginCompanyNumber")
-    public String attemptLoginCompanyNumber(@Size(max=8,min=8) @Valid @RequestParam("companyNumber") String companyNumber, RedirectAttributes redirectAttributes) {
+    //public String attemptLoginCompanyNumber(@Size(max=8,min=8) @Valid @RequestParam("companyNumber") String companyNumber, RedirectAttributes redirectAttributes) {
+    public String attemptLoginCompanyNumber(@Valid @ModelAttribute("companyNumber") CompanyNumber companyNumber,
+                                            BindingResult result, RedirectAttributes redirectAttributes) {
         String scope = "https://identity.company-information.service.gov.uk/user/profile.read https://api.company-information.service.gov.uk/company/" + companyNumber + "/registered-office-address.update";
         redirectAttributes.addAttribute("scope", scope);
         redirectAttributes.addAttribute("response_type", "code");
