@@ -18,15 +18,21 @@
         </div>
     </div>
     <div class="container mt-5">
-        <div class="alert alert-danger col-12" role="alert">
-            <h4 class="alert-heading">There is a problem</h4>
-            <hr>
-            <p class="mb-0">Enter the company number</p>
-        </div>
+
         <form role="form" method="GET" action="/loginCompanyNumber">
+            <div th:if="${errors!=null}" class="alert alert-danger col-12" role="alert">
+                <h4 class="alert-heading">Invalid Company Number</h4>
+                <hr>
+                <table>
+                    <tr th:each="error: ${errors}">
+                        <td th:text="${error.defaultMessage}" />
+                        <!--                <td th:text="${student.name}" />-->
+                    </tr>
+                </table>
+            </div>
             <div class="form-group col-lg-4 pl-0">
-                <label for="exampleInputEmail1" class="font-weight-bold col-form-label-lg">Company number</label>
-                <input type="number" class="form-control form-control-lg" id="exampleInputEmail1" aria-describedby="emailHelp">
+                <label for="companyNumber" class="font-weight-bold col-form-label-lg">Company number</label>
+                <input type="text" class="form-control form-control-lg" name="companyNumber" id="companyNumber" aria-describedby="emailHelp">
             </div>
             <button type="submit" class="btn btn-lg btn-success mt-3 mb-4">Continue</button>
         </form>

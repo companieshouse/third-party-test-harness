@@ -8,8 +8,8 @@ import javax.validation.constraints.Size;
 public class CompanyNumber {
 
     @JsonProperty("companyNumber")
-    @NotBlank(message = "field cannot be empty")
-    @Size(max=8,min=8)
+    @NotBlank(message = "Company Number cannot be empty")
+    @Size(max=8,min=8,message = "Company number must be of size 8")
 //    @Valid
     private String companyNumber;
 

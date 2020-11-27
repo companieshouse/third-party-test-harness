@@ -1,6 +1,7 @@
 package uk.gov.companieshouse.controllers;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import javax.validation.Valid;
@@ -12,6 +13,9 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.Errors;
+import org.springframework.validation.FieldError;
+import org.springframework.validation.ObjectError;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -28,11 +32,12 @@ import uk.gov.companieshouse.service.IOAuthService;
 import uk.gov.companieshouse.service.IUserService;
 
 @Controller
-@Validated
 public class ThirdPartyController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(
             ThirdPartyController.class);
+
+    private static final String companyNumberPlaceHolder = "{{ COMPANY_NUMBER }}";
 
     @Value("${client-id}")
     private String clientId;
@@ -42,6 +47,12 @@ public class ThirdPartyController {
 
     @Value("${authorise-uri}")
     private String authoriseUri;
+
+    @Value("${requested-scope}")
+    private String requestedScope;
+
+    @Value("${user-requested-scope}")
+    private String userRequestedScope;
 
     private final IOAuthService oAuthService;
     private final IUserService userService;
@@ -64,7 +75,7 @@ public class ThirdPartyController {
         redirectAttributes.addAttribute("response_type", "code");
         redirectAttributes.addAttribute("client_id", clientId);
         redirectAttributes.addAttribute("redirect_uri", redirectUri);
-        redirectAttributes.addAttribute("scope", "https://identity.company-information.service.gov.uk/user/profile.read");
+        redirectAttributes.addAttribute("scope", userRequestedScope);
         return "redirect:" + authoriseUri;
     }
 
@@ -73,17 +84,20 @@ public class ThirdPartyController {
         return "loginCompanyNumber";
     }
 
-//    @GetMapping(value = "/error")
-//    public String errorHandling(){
-//        return "login";
-//    }
-
     @GetMapping(value = "/loginCompanyNumber")
-    //public String attemptLoginCompanyNumber(@Size(max=8,min=8) @Valid @RequestParam("companyNumber") String companyNumber, RedirectAttributes redirectAttributes) {
     public String attemptLoginCompanyNumber(@Valid @ModelAttribute("companyNumber") CompanyNumber companyNumber,
-                                            BindingResult result, RedirectAttributes redirectAttributes) {
-        String scope = "https://identity.company-information.service.gov.uk/user/profile.read https://api.company-information.service.gov.uk/company/" + companyNumber + "/registered-office-address.update";
-        redirectAttributes.addAttribute("scope", scope);
+                                            BindingResult result, RedirectAttributes redirectAttributes, Model model) {
+        if(result.hasErrors()){
+            List<FieldError> errorsList = result.getFieldErrors();
+            model.addAttribute("errors", errorsList);
+            return "loginCompanyNumber";
+        }
+        List<String> scopeList = new ArrayList<>();
+        scopeList.add(userRequestedScope);
+        scopeList.add(requestedScope.replace(companyNumberPlaceHolder,companyNumber.getCompanyNumber()));
+        //String scope = userRequestedScope + " " + requestedScope.replace(companyNumberPlaceHolder,companyNumber.getCompanyNumber());
+        LOGGER.warn("***SCOPE: "+scopeList.toString());
+        redirectAttributes.addAttribute("scope", scopeList);
         redirectAttributes.addAttribute("response_type", "code");
         redirectAttributes.addAttribute("client_id", clientId);
         redirectAttributes.addAttribute("redirect_uri", redirectUri);
