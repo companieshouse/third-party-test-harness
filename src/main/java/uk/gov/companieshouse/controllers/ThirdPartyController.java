@@ -94,8 +94,7 @@ public class ThirdPartyController {
         scopeList.add(requestedScope.replace(companyNumberPlaceHolder,companyNumber.getCompanyNumber()));
         String scope = userRequestedScope + " " + requestedScope.replace(companyNumberPlaceHolder,companyNumber.getCompanyNumber());
         LOGGER.warn("***SCOPE: "+scopeList.toString());
-//        model.addAttribute("scope", scopeList);
-        redirectAttributes.addAttribute("scope", scopeList);
+        redirectAttributes.addAttribute("scope", scope);
         redirectAttributes.addAttribute("response_type", "code");
         redirectAttributes.addAttribute("client_id", clientId);
         redirectAttributes.addAttribute("redirect_uri", redirectUri);
@@ -103,16 +102,14 @@ public class ThirdPartyController {
     }
 
     @GetMapping(value = "/redirect")
-    public String handleRedirect(@RequestParam("code") String code, Model model, CompanyNumber companyNumber) throws IOException {
+    public String handleRedirect(@RequestParam("code") String code, Model model) throws IOException {
         Map<String, String> userTokens = oAuthService.getAccessTokenAndRefreshToken(code);
 
-        List<String> scopeList = new ArrayList<>();
-        scopeList.add(userRequestedScope);
-        scopeList.add(requestedScope.replace(companyNumberPlaceHolder,companyNumber.getCompanyNumber()));
         User user = userService.getUserDetails(userTokens.get("access_token"));
         userService.storeUserDetails(user.getEmail(), userTokens.get("access_token"), userTokens.get("refresh_token"), Long.parseLong(userTokens.get("expires_in")));
         model.addAttribute("user", user);
-        model.addAttribute("scope", scopeList);
+        model.addAttribute("scope", user.getScope());
+        LOGGER.warn("***** SCOPE *****" + user.getScope());
         model.addAttribute("accessToken", userTokens.get("access_token"));
         model.addAttribute("query", new Query());
         return "loginResult";
