@@ -36,8 +36,8 @@
 <!--                    <td th:text="${user.scope}"></td>-->
                     <td>
                         <table class="table table-striped table-dark">
-                            <tr th:each="scope: ${user.scope}">
-                                <td th:text="${scope}" />
+                            <tr th:each="scope: ${scope}">
+                            <td th:text="${scope}" />
                             </tr>
                         </table>
                     </td>

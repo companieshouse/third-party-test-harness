@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import javax.validation.Valid;
-import javax.validation.constraints.Size;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,10 +12,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.Errors;
 import org.springframework.validation.FieldError;
-import org.springframework.validation.ObjectError;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -92,11 +88,13 @@ public class ThirdPartyController {
             model.addAttribute("errors", errorsList);
             return "loginCompanyNumber";
         }
+
         List<String> scopeList = new ArrayList<>();
         scopeList.add(userRequestedScope);
         scopeList.add(requestedScope.replace(companyNumberPlaceHolder,companyNumber.getCompanyNumber()));
-        //String scope = userRequestedScope + " " + requestedScope.replace(companyNumberPlaceHolder,companyNumber.getCompanyNumber());
+        String scope = userRequestedScope + " " + requestedScope.replace(companyNumberPlaceHolder,companyNumber.getCompanyNumber());
         LOGGER.warn("***SCOPE: "+scopeList.toString());
+//        model.addAttribute("scope", scopeList);
         redirectAttributes.addAttribute("scope", scopeList);
         redirectAttributes.addAttribute("response_type", "code");
         redirectAttributes.addAttribute("client_id", clientId);
@@ -105,12 +103,16 @@ public class ThirdPartyController {
     }
 
     @GetMapping(value = "/redirect")
-    public String handleRedirect(@RequestParam("code") String code, Model model) throws IOException {
+    public String handleRedirect(@RequestParam("code") String code, Model model, CompanyNumber companyNumber) throws IOException {
         Map<String, String> userTokens = oAuthService.getAccessTokenAndRefreshToken(code);
 
+        List<String> scopeList = new ArrayList<>();
+        scopeList.add(userRequestedScope);
+        scopeList.add(requestedScope.replace(companyNumberPlaceHolder,companyNumber.getCompanyNumber()));
         User user = userService.getUserDetails(userTokens.get("access_token"));
         userService.storeUserDetails(user.getEmail(), userTokens.get("access_token"), userTokens.get("refresh_token"), Long.parseLong(userTokens.get("expires_in")));
         model.addAttribute("user", user);
+        model.addAttribute("scope", scopeList);
         model.addAttribute("accessToken", userTokens.get("access_token"));
         model.addAttribute("query", new Query());
         return "loginResult";
