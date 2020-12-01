@@ -6,5 +6,4 @@ import uk.gov.companieshouse.model.UserTokenStore;
 
 public interface IOAuthService {
     Map<String, String> getAccessTokenAndRefreshToken(String authCode)throws IOException;
-    String refreshAccessToken(UserTokenStore userTokenStore)throws IOException;
 }

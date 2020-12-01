@@ -1,5 +1,11 @@
 package uk.gov.companieshouse.model;
 
+import java.lang.reflect.Array;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
 public class User {
     private String id;
     private String email;
@@ -46,6 +52,15 @@ public class User {
 
     public String getScope() {
         return scope;
+    }
+
+    public Set<String> getScopes() {
+        Set<String> scopeSet = new HashSet<>();
+
+        if (scope != null){
+            scopeSet.addAll(Arrays.asList(scope.split(" ")));
+        }
+        return scopeSet;
     }
 
     public void setScope(String scope) {

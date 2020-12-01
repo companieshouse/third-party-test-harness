@@ -8,8 +8,4 @@ import uk.gov.companieshouse.model.UserTokenStore;
 public interface IUserService {
     User getUserDetails(String accessToken);
     void storeUserDetails(String email, String accessToken, String refreshToken, long expiresIn);
-    List<UserTokenStore> findAllUsers();
-    UserTokenStore findByEmail(String email) throws NoUserOfIdException;
-    void saveUserTokenStore(UserTokenStore userTokenStore);
-    UserTokenStore findByAccessToken(String accessToken)throws NoUserOfIdException;
 }

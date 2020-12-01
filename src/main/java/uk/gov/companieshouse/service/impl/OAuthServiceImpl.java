@@ -20,7 +20,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
-import uk.gov.companieshouse.model.UserTokenStore;
 import uk.gov.companieshouse.service.IOAuthService;
 import uk.gov.companieshouse.service.IUserService;
 
@@ -101,33 +100,5 @@ public class OAuthServiceImpl implements IOAuthService {
         returnMap.put("refresh_token", refresh);
         returnMap.put("expires_in", expiresIn);
         return returnMap;
-    }
-
-    @Override
-    public String refreshAccessToken(UserTokenStore userTokenStore) throws IOException {
-        RestTemplate restTemplate = new RestTemplate();
-
-        ResponseEntity<String> response;
-        String credentials = clientId + ":" + clientSecret;
-        String encodedCredentials = new String(Base64.encodeBase64(credentials.getBytes()));
-
-        //Add secret and id to headers
-        HttpHeaders headers = new HttpHeaders();
-        headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
-        headers.add(AUTH_HEADER, "Basic " + encodedCredentials);
-
-        HttpEntity<String> entity = new HttpEntity<>(headers);
-
-        String accessTokenUrl = refreshTokenUriTemplate.buildAndExpand(userTokenStore.getRefreshToken(), "refresh_token").toUriString();
-
-        response = restTemplate.exchange(accessTokenUrl, HttpMethod.POST, entity, String.class);
-
-        ObjectMapper mapper = new ObjectMapper();
-        JsonNode node = mapper.readTree(response.getBody());
-        String token = node.path("access_token").asText();
-
-        userTokenStore.setAccessToken(token);
-        userService.saveUserTokenStore(userTokenStore);
-        return token;
     }
 }

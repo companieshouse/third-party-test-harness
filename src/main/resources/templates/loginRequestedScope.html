@@ -13,26 +13,25 @@
         <div class="jumbotron jumbotron-fluid">
             <div class="container">
                 <h1 class="display-6">Proof of concept application</h1>
-                <p class="lead">Enter the company number below. The company number must be 8-characters.</p>
+                <p class="lead">Enter the requested scopes you wish to obtain.</p>
             </div>
         </div>
     </div>
     <div class="container mt-5">
 
-        <form role="form" method="GET" action="/loginCompanyNumber">
+        <form role="form" method="GET" action="/loginRequestedScope">
             <div th:if="${errors!=null}" class="alert alert-danger col-12" role="alert">
-                <h4 class="alert-heading">Invalid Company Number</h4>
+                <h4 class="alert-heading">Invalid Scope</h4>
                 <hr>
                 <table>
                     <tr th:each="error: ${errors}">
                         <td th:text="${error.defaultMessage}" />
-                        <!--                <td th:text="${student.name}" />-->
                     </tr>
                 </table>
             </div>
             <div class="form-group col-lg-4 pl-0">
-                <label for="companyNumber" class="font-weight-bold col-form-label-lg">Company number</label>
-                <input type="text" class="form-control form-control-lg" name="companyNumber" id="companyNumber" aria-describedby="emailHelp">
+                <label for="scope" class="font-weight-bold col-form-label-lg">Requested Scope</label>
+                <textarea class="form-control form-control-lg" name="scope" id="scope" aria-describedby="emailHelp"></textarea>
             </div>
             <button type="submit" class="btn btn-lg btn-success mt-3 mb-4">Continue</button>
         </form>
