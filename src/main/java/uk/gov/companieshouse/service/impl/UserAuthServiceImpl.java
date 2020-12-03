@@ -8,10 +8,9 @@ import java.util.HashMap;
 import java.util.Map;
 import javax.annotation.PostConstruct;
 import org.apache.tomcat.util.codec.binary.Base64;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -20,14 +19,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
-import uk.gov.companieshouse.service.IOAuthService;
-import uk.gov.companieshouse.service.IUserService;
+import uk.gov.companieshouse.exception.RestTemplateResponseErrorHandler;
+import uk.gov.companieshouse.model.User;
+import uk.gov.companieshouse.model.UserTokenStore;
+import uk.gov.companieshouse.service.UserAuthService;
 
 @Service
-public class OAuthServiceImpl implements IOAuthService {
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(
-            OAuthServiceImpl.class);
+public class UserAuthServiceImpl implements UserAuthService {
 
     @Value("${client-id}")
     private String clientId;
@@ -41,19 +39,18 @@ public class OAuthServiceImpl implements IOAuthService {
     @Value("${token-uri}")
     private String tokenUri;
 
-    private final IUserService userService;
+    @Value("${user-uri}")
+    private String userUri;
 
+    private Map<String, UserTokenStore> userTokenStoreMap;
+    private final RestTemplate restTemplate;
     private UriComponentsBuilder tokenUriTemplate;
     private UriComponentsBuilder refreshTokenUriTemplate;
     private static final String AUTH_HEADER = "Authorization";
-
-    @Autowired
-    public OAuthServiceImpl(IUserService userService) {
-        this.userService = userService;
-    }
+    private static final String BEARER_HEADER = "Bearer ";
 
     @PostConstruct
-    private void init(){
+    private void init() {
         this.tokenUriTemplate = UriComponentsBuilder.fromUriString(tokenUri)
                 .query("code={code}")
                 .query("grant_type={grantType}")
@@ -63,12 +60,18 @@ public class OAuthServiceImpl implements IOAuthService {
                 .query("grant_type={grantType}");
     }
 
-    @Override
-    public Map<String, String> getAccessTokenAndRefreshToken(String authCode) throws IOException{
-        ResponseEntity<String> response;
-        LOGGER.info("Authorization Code------{}", authCode);
+    @Autowired
+    public UserAuthServiceImpl(RestTemplateBuilder restTemplateBuilder) {
+        this.userTokenStoreMap = new HashMap<>();
+        this.restTemplate = restTemplateBuilder.errorHandler(new RestTemplateResponseErrorHandler())
+                .build();
+    }
 
-        RestTemplate restTemplate = new RestTemplate();
+    @Override
+    public Map<String, String> getAccessTokenAndRefreshToken(String authCode) throws IOException {
+        ResponseEntity<String> response;
+
+        RestTemplate template = new RestTemplate();
 
         String credentials = clientId + ":" + clientSecret;
         String encodedCredentials = new String(Base64.encodeBase64(credentials.getBytes()));
@@ -84,10 +87,9 @@ public class OAuthServiceImpl implements IOAuthService {
         String accessTokenUrl = this.tokenUriTemplate.
                 buildAndExpand(authCode, "authorization_code", redirectUri).toUriString();
 
-        response = restTemplate.exchange(accessTokenUrl, HttpMethod.POST, request, String.class);
+        response = template.exchange(accessTokenUrl, HttpMethod.POST, request, String.class);
 
         String accessAndRefreshToken = response.getBody();
-        LOGGER.info("Access Token Response ---------{}", accessAndRefreshToken);
 
         // Get the Access Token From the recieved JSON response
         ObjectMapper mapper = new ObjectMapper();
@@ -100,5 +102,25 @@ public class OAuthServiceImpl implements IOAuthService {
         returnMap.put("refresh_token", refresh);
         returnMap.put("expires_in", expiresIn);
         return returnMap;
+    }
+
+    @Override
+    public User getUserDetails(String accessToken) {
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.add(AUTH_HEADER, BEARER_HEADER + accessToken);
+        HttpEntity<String> entity = new HttpEntity<>(headers);
+
+        ResponseEntity<User> responseEntity = restTemplate
+                .exchange(userUri, HttpMethod.GET, entity, User.class);
+        return responseEntity.getBody();
+    }
+
+    @Override
+    public void storeUserDetails(String email, String accessToken, String refreshToken,
+            long expiresIn) {
+        UserTokenStore userToken = new UserTokenStore(email, accessToken, refreshToken,
+                (System.currentTimeMillis() / 1000L) + 3600);
+        userTokenStoreMap.put(email, userToken);
     }
 }

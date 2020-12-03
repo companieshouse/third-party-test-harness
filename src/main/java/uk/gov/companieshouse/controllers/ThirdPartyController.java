@@ -14,11 +14,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import uk.gov.companieshouse.model.Scope;
 import uk.gov.companieshouse.model.Query;
+import uk.gov.companieshouse.model.Scope;
 import uk.gov.companieshouse.model.User;
-import uk.gov.companieshouse.service.IOAuthService;
-import uk.gov.companieshouse.service.IUserService;
+import uk.gov.companieshouse.service.UserAuthService;
 
 @Controller
 public class ThirdPartyController {
@@ -27,8 +26,7 @@ public class ThirdPartyController {
     private static final String SCOPE = "scope";
     private static final String USER_SCOPE = "https://identity.company-information.service.gov.uk/user/profile.read";
 
-    private final IOAuthService oAuthService;
-    private final IUserService userService;
+    private final UserAuthService userAuthService;
 
     @Value("${client-id}")
     private String clientId;
@@ -38,9 +36,8 @@ public class ThirdPartyController {
     private String authoriseUri;
 
     @Autowired
-    public ThirdPartyController(IOAuthService oAuthService, IUserService userService) {
-        this.oAuthService = oAuthService;
-        this.userService = userService;
+    public ThirdPartyController(UserAuthService userAuthService) {
+        this.userAuthService = userAuthService;
     }
 
     @GetMapping(value = "/login")
@@ -81,10 +78,10 @@ public class ThirdPartyController {
     @GetMapping(value = "/redirect")
     public String handleRedirect(@RequestParam("code") String code, Model model)
             throws IOException {
-        Map<String, String> userTokens = oAuthService.getAccessTokenAndRefreshToken(code);
+        Map<String, String> userTokens = userAuthService.getAccessTokenAndRefreshToken(code);
 
-        User user = userService.getUserDetails(userTokens.get(ACCESS_TOKEN));
-        userService.storeUserDetails(user.getEmail(), userTokens.get(ACCESS_TOKEN),
+        User user = userAuthService.getUserDetails(userTokens.get(ACCESS_TOKEN));
+        userAuthService.storeUserDetails(user.getEmail(), userTokens.get(ACCESS_TOKEN),
                 userTokens.get("refresh_token"), Long.parseLong(userTokens.get("expires_in")));
         model.addAttribute("user", user);
         model.addAttribute("accessToken", userTokens.get(ACCESS_TOKEN));

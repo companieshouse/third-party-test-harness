@@ -18,12 +18,12 @@ public class ExceptionController {
 
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     @ExceptionHandler(IOException.class)
-    public String handleIOException(){
+    public String handleIOException() {
         return "error";
     }
 
     @ExceptionHandler(HttpClientErrorException.class)
-    public ModelAndView handleHttpClientError(HttpClientErrorException e){
+    public ModelAndView handleHttpClientError(HttpClientErrorException e) {
         ModelAndView modelAndView = new ModelAndView("httpClientError");
         modelAndView.addObject("reason", e.getStatusText());
         LOGGER.error("HttpClientException", e);

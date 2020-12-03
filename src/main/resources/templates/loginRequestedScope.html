@@ -1,41 +1,43 @@
 <!DOCTYPE html >
-<html lang="en" xmlns:th="http://www.thymeleaf.org"
+<html lang="en" layout:decorate="~{base.html}"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="~{base.html}">
+      xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title th:text="Login"></title>
+  <title th:text="Login"></title>
 </head>
 
 <body>
 <section layout:fragment="content">
-    <br>
-    <div class="container mt-5">
-        <div class="jumbotron jumbotron-fluid">
-            <div class="container">
-                <h1 class="display-6">Proof of concept application</h1>
-                <p class="lead">Enter the requested scopes you wish to obtain.</p>
-            </div>
-        </div>
+  <br>
+  <div class="container mt-5">
+    <div class="jumbotron jumbotron-fluid">
+      <div class="container">
+        <h1 class="display-6">Proof of concept application</h1>
+        <p class="lead">Enter the requested scopes you wish to obtain.</p>
+      </div>
     </div>
-    <div class="container mt-5">
+  </div>
+  <div class="container mt-5">
 
-        <form role="form" method="GET" action="/loginRequestedScope">
-            <div th:if="${errors!=null}" class="alert alert-danger col-12" role="alert">
-                <h4 class="alert-heading">Invalid Scope</h4>
-                <hr>
-                <table>
-                    <tr th:each="error: ${errors}">
-                        <td th:text="${error.defaultMessage}" />
-                    </tr>
-                </table>
-            </div>
-            <div class="form-group col-lg-12 pl-0">
-                <label for="requestedScope" class="font-weight-bold col-form-label-lg">Requested Scope</label>
-                <textarea class="form-control form-control-lg" name="requestedScope" id="requestedScope"></textarea>
-            </div>
-            <button type="submit" class="btn btn-lg btn-success mt-3 mb-4">Continue</button>
-        </form>
-    </div>
+    <form action="/loginRequestedScope" method="GET" role="form">
+      <div class="alert alert-danger col-12" role="alert" th:if="${errors!=null}">
+        <h4 class="alert-heading">Invalid Scope</h4>
+        <hr>
+        <table>
+          <tr th:each="error: ${errors}">
+            <td th:text="${error.defaultMessage}"/>
+          </tr>
+        </table>
+      </div>
+      <div class="form-group col-lg-12 pl-0">
+        <label class="font-weight-bold col-form-label-lg" for="requestedScope">Requested
+          Scope</label>
+        <textarea class="form-control form-control-lg" id="requestedScope"
+                  name="requestedScope"></textarea>
+      </div>
+      <button class="btn btn-lg btn-success mt-3 mb-4" type="submit">Continue</button>
+    </form>
+  </div>
 
 
 </section>

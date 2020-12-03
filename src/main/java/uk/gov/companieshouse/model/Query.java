@@ -1,6 +1,7 @@
 package uk.gov.companieshouse.model;
 
 public class Query {
+
     private String email;
     private String companyNumber;
 

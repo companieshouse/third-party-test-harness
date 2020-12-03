@@ -1,11 +1,15 @@
 package uk.gov.companieshouse.service;
 
-import java.util.List;
-import uk.gov.companieshouse.exception.NoUserOfIdException;
+import java.io.IOException;
+import java.util.Map;
 import uk.gov.companieshouse.model.User;
-import uk.gov.companieshouse.model.UserTokenStore;
 
-public interface IUserService {
+public interface UserAuthService {
+
+    Map<String, String> getAccessTokenAndRefreshToken(String authCode) throws IOException;
+
     User getUserDetails(String accessToken);
+
     void storeUserDetails(String email, String accessToken, String refreshToken, long expiresIn);
+
 }
