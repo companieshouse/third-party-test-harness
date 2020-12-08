@@ -28,28 +28,28 @@ import uk.gov.companieshouse.service.UserAuthService;
 public class UserAuthServiceImpl implements UserAuthService {
 
     @Value("${client-id}")
-    private String clientId;
+    protected String clientId;
 
     @Value("${client-secret}")
-    private String clientSecret;
+    protected String clientSecret;
 
     @Value("${redirect-uri}")
-    private String redirectUri;
+    protected String redirectUri;
 
     @Value("${token-uri}")
-    private String tokenUri;
+    protected String tokenUri;
 
     @Value("${user-uri}")
-    private String userUri;
+    protected String userUri;
 
-    private Map<String, UserTokenStore> userTokenStoreMap;
+    protected Map<String, UserTokenStore> userTokenStoreMap;
     private final RestTemplate restTemplate;
     private UriComponentsBuilder tokenUriTemplate;
     private static final String AUTH_HEADER = "Authorization";
     private static final String BEARER_HEADER = "Bearer ";
 
     @PostConstruct
-    private void init() {
+    void init() {
         this.tokenUriTemplate = UriComponentsBuilder.fromUriString(tokenUri)
                 .query("code={code}")
                 .query("grant_type={grantType}")
@@ -81,7 +81,7 @@ public class UserAuthServiceImpl implements UserAuthService {
 
         ResponseEntity<String> response = restTemplate.exchange(accessTokenUrl, HttpMethod.POST, request, String.class);
 
-        // Get the Access Token From the recieved JSON response
+        // Get the Access Token From the received JSON response
         ObjectMapper mapper = new ObjectMapper();
         JsonNode node = mapper.readTree(response.getBody());
         return node.path("access_token").asText();
