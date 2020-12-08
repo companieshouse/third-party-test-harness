@@ -3,11 +3,11 @@ package uk.gov.companieshouse.service.impl;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
+import java.util.Base64;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import javax.annotation.PostConstruct;
-import org.apache.tomcat.util.codec.binary.Base64;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.client.RestTemplateBuilder;
@@ -66,7 +66,7 @@ public class UserAuthServiceImpl implements UserAuthService {
     @Override
     public String getAccessToken(String authCode) throws IOException {
         String credentials = clientId + ":" + clientSecret;
-        String encodedCredentials = new String(Base64.encodeBase64(credentials.getBytes()));
+        String encodedCredentials = new String(Base64.getEncoder().encode(credentials.getBytes()));
 
         //Add secret and id to headers
         HttpHeaders headers = new HttpHeaders();
