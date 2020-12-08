@@ -45,7 +45,6 @@ public class UserAuthServiceImpl implements UserAuthService {
     private Map<String, UserTokenStore> userTokenStoreMap;
     private final RestTemplate restTemplate;
     private UriComponentsBuilder tokenUriTemplate;
-    private UriComponentsBuilder refreshTokenUriTemplate;
     private static final String AUTH_HEADER = "Authorization";
     private static final String BEARER_HEADER = "Bearer ";
 
@@ -55,9 +54,6 @@ public class UserAuthServiceImpl implements UserAuthService {
                 .query("code={code}")
                 .query("grant_type={grantType}")
                 .query("redirect_uri={redirectUri}");
-        this.refreshTokenUriTemplate = UriComponentsBuilder.fromUriString(tokenUri)
-                .query("refresh_token={refreshToken}")
-                .query("grant_type={grantType}");
     }
 
     @Autowired
@@ -68,11 +64,7 @@ public class UserAuthServiceImpl implements UserAuthService {
     }
 
     @Override
-    public Map<String, String> getAccessTokenAndRefreshToken(String authCode) throws IOException {
-        ResponseEntity<String> response;
-
-        RestTemplate template = new RestTemplate();
-
+    public String getAccessToken(String authCode) throws IOException {
         String credentials = clientId + ":" + clientSecret;
         String encodedCredentials = new String(Base64.encodeBase64(credentials.getBytes()));
 
@@ -87,21 +79,12 @@ public class UserAuthServiceImpl implements UserAuthService {
         String accessTokenUrl = this.tokenUriTemplate.
                 buildAndExpand(authCode, "authorization_code", redirectUri).toUriString();
 
-        response = template.exchange(accessTokenUrl, HttpMethod.POST, request, String.class);
-
-        String accessAndRefreshToken = response.getBody();
+        ResponseEntity<String> response = restTemplate.exchange(accessTokenUrl, HttpMethod.POST, request, String.class);
 
         // Get the Access Token From the recieved JSON response
         ObjectMapper mapper = new ObjectMapper();
-        JsonNode node = mapper.readTree(accessAndRefreshToken);
-        String token = node.path("access_token").asText();
-        String refresh = node.path("refresh_token").asText();
-        String expiresIn = node.path("expires_in").asText();
-        Map<String, String> returnMap = new HashMap<>();
-        returnMap.put("access_token", token);
-        returnMap.put("refresh_token", refresh);
-        returnMap.put("expires_in", expiresIn);
-        return returnMap;
+        JsonNode node = mapper.readTree(response.getBody());
+        return node.path("access_token").asText();
     }
 
     @Override
@@ -117,10 +100,8 @@ public class UserAuthServiceImpl implements UserAuthService {
     }
 
     @Override
-    public void storeUserDetails(String email, String accessToken, String refreshToken,
-            long expiresIn) {
-        UserTokenStore userToken = new UserTokenStore(email, accessToken, refreshToken,
-                (System.currentTimeMillis() / 1000L) + 3600);
+    public void storeUserDetails(String email, String accessToken) {
+        UserTokenStore userToken = new UserTokenStore(email, accessToken);
         userTokenStoreMap.put(email, userToken);
     }
 }

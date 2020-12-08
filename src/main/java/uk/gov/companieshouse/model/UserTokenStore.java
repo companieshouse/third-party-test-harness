@@ -4,14 +4,10 @@ public class UserTokenStore {
 
     private String email;
     private String accessToken;
-    private final String refreshToken;
-    private final long expires;
 
-    public UserTokenStore(String email, String accessToken, String refreshToken, long expires) {
+    public UserTokenStore(String email, String accessToken) {
         this.email = email;
         this.accessToken = accessToken;
-        this.refreshToken = refreshToken;
-        this.expires = expires;
     }
 
     public String getEmail() {

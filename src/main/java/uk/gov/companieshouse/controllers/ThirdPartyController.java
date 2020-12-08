@@ -2,8 +2,9 @@ package uk.gov.companieshouse.controllers;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.Map;
+
 import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
 import uk.gov.companieshouse.model.Query;
 import uk.gov.companieshouse.model.Scope;
 import uk.gov.companieshouse.model.User;
@@ -21,8 +23,6 @@ import uk.gov.companieshouse.service.UserAuthService;
 
 @Controller
 public class ThirdPartyController {
-
-    private static final String ACCESS_TOKEN = "access_token";
     private static final String SCOPE = "scope";
     private static final String USER_SCOPE = "https://identity.company-information.service.gov.uk/user/profile.read";
 
@@ -78,13 +78,12 @@ public class ThirdPartyController {
     @GetMapping(value = "/redirect")
     public String handleRedirect(@RequestParam("code") String code, Model model)
             throws IOException {
-        Map<String, String> userTokens = userAuthService.getAccessTokenAndRefreshToken(code);
+        String accessToken = userAuthService.getAccessToken(code);
 
-        User user = userAuthService.getUserDetails(userTokens.get(ACCESS_TOKEN));
-        userAuthService.storeUserDetails(user.getEmail(), userTokens.get(ACCESS_TOKEN),
-                userTokens.get("refresh_token"), Long.parseLong(userTokens.get("expires_in")));
+        User user = userAuthService.getUserDetails(accessToken);
+        userAuthService.storeUserDetails(user.getEmail(), accessToken);
         model.addAttribute("user", user);
-        model.addAttribute("accessToken", userTokens.get(ACCESS_TOKEN));
+        model.addAttribute("accessToken", accessToken);
         model.addAttribute("query", new Query());
         return "loginResult";
     }
