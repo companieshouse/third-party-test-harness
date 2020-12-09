@@ -9,6 +9,16 @@
         <artifactId>spring-boot-maven-plugin</artifactId>
         <groupId>org.springframework.boot</groupId>
       </plugin>
+      <plugin>
+        <groupId>com.google.cloud.tools</groupId>
+        <artifactId>jib-maven-plugin</artifactId>
+        <version>2.7.0</version>
+        <configuration>
+            <container>
+                <expandClasspathDependencies>true</expandClasspathDependencies>
+            </container>
+        </configuration>
+        </plugin>
     </plugins>
   </build>
   <dependencies>
@@ -86,11 +96,9 @@
   </parent>
 
   <properties>
-    <java.version>1.8</java.version>
-    <!--    <java.version>11</java.version>-->
-    <!--    <maven.compiler.source>11</maven.compiler.source>-->
-    <!--    <maven.compiler.target>11</maven.compiler.target>-->
-    <!--    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>-->
+    <maven.compiler.source>11</maven.compiler.source>
+    <maven.compiler.target>11</maven.compiler.target>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
 
 
