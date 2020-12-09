@@ -1,0 +1,17 @@
+<!DOCTYPE html >
+<html lang="en" layout:decorate="~{base.html}"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title th:text="Result"></title>
+</head>
+
+<body>
+<section layout:fragment="content">
+  <br>
+  <h1>Http Client error</h1>
+  <h2 th:text="${reason}"></h2>
+</section>
+</body>
+</html>
+
