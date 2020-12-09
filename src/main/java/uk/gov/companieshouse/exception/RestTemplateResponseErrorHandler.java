@@ -10,7 +10,7 @@ import org.springframework.web.client.ResponseErrorHandler;
 
 @Component
 public class RestTemplateResponseErrorHandler
-implements ResponseErrorHandler {
+        implements ResponseErrorHandler {
 
     @Override
     public boolean hasError(ClientHttpResponse httpResponse)

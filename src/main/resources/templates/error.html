@@ -1,0 +1,17 @@
+<!DOCTYPE html >
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{base.html}">
+<head>
+  <title th:text="Error"></title>
+</head>
+<body>
+<section layout:fragment="content">
+  <br>
+  <p class="lead mt-4">There was a problem. Please try again.</p>
+  <hr class="my-4">
+  <br>
+  <a class="btn btn-success btn-lg mb-2 mb-md-0 mr-md-4" href="/login" role="button">Home</a>
+</section>
+</body>
+</html>

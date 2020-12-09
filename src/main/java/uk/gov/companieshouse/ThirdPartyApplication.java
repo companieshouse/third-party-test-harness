@@ -29,22 +29,22 @@ public class ThirdPartyApplication implements CommandLineRunner {
     public void run(String... args) throws Exception {
         boolean startUpError = false;
 
-        if(clientId == null || clientId.isEmpty()){
+        if (clientId == null || clientId.isEmpty()) {
             LOGGER.warn("No client id set in application.properties, please create one");
             startUpError = true;
         }
 
-        if(clientSecret == null || clientSecret.isEmpty()){
+        if (clientSecret == null || clientSecret.isEmpty()) {
             LOGGER.warn("No client secret set in application.properties, please create one");
             startUpError = true;
         }
 
-        if(redirectUri == null || redirectUri.isEmpty()){
+        if (redirectUri == null || redirectUri.isEmpty()) {
             LOGGER.warn("No redirect URI set in application.properties, please create one");
             startUpError = true;
         }
 
-        if(startUpError){
+        if (startUpError) {
             System.exit(-1);
         }
     }

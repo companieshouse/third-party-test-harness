@@ -1,6 +1,11 @@
 package uk.gov.companieshouse.model;
 
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
+
 public class User {
+
     private String id;
     private String email;
     private String locale;
@@ -8,7 +13,8 @@ public class User {
     private String forename;
     private String surname;
 
-    public User(String id, String email, String locale, String scope, String forename, String surname) {
+    public User(String id, String email, String locale, String scope, String forename,
+            String surname) {
         this.id = id;
         this.email = email;
         this.locale = locale;
@@ -50,6 +56,15 @@ public class User {
 
     public void setScope(String scope) {
         this.scope = scope;
+    }
+
+    public Set<String> getScopes() {
+        Set<String> scopeSet = new HashSet<>();
+
+        if (scope != null) {
+            scopeSet.addAll(Arrays.asList(scope.split(" ")));
+        }
+        return scopeSet;
     }
 
     public String getForename() {
