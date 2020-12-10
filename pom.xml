@@ -2,7 +2,27 @@
 <project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xmlns="http://maven.apache.org/POM/4.0.0"
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+  <name>third-party-test-harness</name>
+  <description>Third party web application</description>
   <artifactId>third-party-test-harness</artifactId>
+  <groupId>uk.gov.companieshouse</groupId>
+  <modelVersion>4.0.0</modelVersion>
+  <version>unversioned</version>
+
+  <parent>
+    <artifactId>spring-boot-starter-parent</artifactId>
+    <groupId>org.springframework.boot</groupId>
+    <relativePath/>
+    <version>2.3.5.RELEASE</version> <!-- lookup parent from repository -->
+  </parent>
+
+  <properties>
+    <maven.compiler.source>11</maven.compiler.source>
+    <maven.compiler.target>11</maven.compiler.target>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+  </properties>
+
   <build>
     <plugins>
       <plugin>
@@ -82,26 +102,5 @@
     </dependency>
 
   </dependencies>
-  <description>Third party web application</description>
-  <groupId>uk.gov.companieshouse</groupId>
-  <modelVersion>4.0.0</modelVersion>
-
-  <name>third-party-test-harness</name>
-
-  <parent>
-    <artifactId>spring-boot-starter-parent</artifactId>
-    <groupId>org.springframework.boot</groupId>
-    <relativePath/>
-    <version>2.3.5.RELEASE</version> <!-- lookup parent from repository -->
-  </parent>
-
-  <properties>
-    <maven.compiler.source>11</maven.compiler.source>
-    <maven.compiler.target>11</maven.compiler.target>
-    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-  </properties>
-
-
-  <version>unversioned</version>
 
 </project>
