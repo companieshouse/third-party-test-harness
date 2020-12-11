@@ -8,9 +8,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.io.IOException;
-import java.time.Instant;
 import java.util.Base64;
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -21,15 +19,17 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
-
 import uk.gov.companieshouse.model.User;
 import uk.gov.companieshouse.model.UserTokenStore;
 
 @ExtendWith(MockitoExtension.class)
 public class UserAuthServiceImplTest {
+
+    private static final String AUTHORIZATION = "Authorization";
+    private static final String ACCEPT = "Accept";
+
     @Mock
     private RestTemplate restTemplate;
     
@@ -75,13 +75,13 @@ public class UserAuthServiceImplTest {
         verify(restTemplate).exchange(eq(accessTokenUrl), eq(HttpMethod.POST), entityCaptor.capture(), eq(String.class));
 
         HttpEntity<String> entity = entityCaptor.getValue();
-        assertTrue(entity.getHeaders().containsKey("Authorization"));
-        assertEquals(1, entity.getHeaders().get("Authorization").size());
-        assertEquals("Basic " + expectedEncodedCredentials, entity.getHeaders().get("Authorization").get(0));
+        assertTrue(entity.getHeaders().containsKey(AUTHORIZATION));
+        assertEquals(1, entity.getHeaders().get(AUTHORIZATION).size());
+        assertEquals("Basic " + expectedEncodedCredentials, entity.getHeaders().get(AUTHORIZATION).get(0));
 
-        assertTrue(entity.getHeaders().containsKey("Accept"));
-        assertEquals(1, entity.getHeaders().get("Accept").size());
-        assertEquals("application/json", entity.getHeaders().get("Accept").get(0));
+        assertTrue(entity.getHeaders().containsKey(ACCEPT));
+        assertEquals(1, entity.getHeaders().get(ACCEPT).size());
+        assertEquals("application/json", entity.getHeaders().get(ACCEPT).get(0));
     }
 
     @Test
@@ -104,9 +104,9 @@ public class UserAuthServiceImplTest {
         
         HttpEntity<String> entity = entityCaptor.getValue();
         assertEquals(1, entity.getHeaders().size());
-        assertTrue(entity.getHeaders().containsKey("Authorization"));
-        assertEquals(1, entity.getHeaders().get("Authorization").size());
-        assertEquals("Bearer " + accessToken, entity.getHeaders().get("Authorization").get(0));
+        assertTrue(entity.getHeaders().containsKey(AUTHORIZATION));
+        assertEquals(1, entity.getHeaders().get(AUTHORIZATION).size());
+        assertEquals("Bearer " + accessToken, entity.getHeaders().get(AUTHORIZATION).get(0));
     }
     
 
