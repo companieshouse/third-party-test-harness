@@ -16,6 +16,14 @@ This is an example application of a third party app gaining an Oauth token and u
 * Once every 5 minutes the application attempts a User not present journey with all the users who have logged in, and uses the refresh token if required.
 * For CHS usage, environment variables have already been created internally to run app locally or in team environments
 
+### Docker Usage:
+* Ensure that Docker-chs-development is up to date 
+* Required modules: ch-gov-uk, account-ch-gov-uk and mongo
+* Pull image from private CH registry by running `docker pull 169942020521.dkr.ecr.eu-west-1.amazonaws.com/local/third-party-test-harness:latest` command or run the following steps to build image locally: 
+  * `Make`
+  * Run: `mvn compile jib:dockerBuild -Dimage=169942020521.dkr.ecr.eu-west-1.amazonaws.com/local/third-party-test-harness`
+* Entrypoint is http://chs.local/login
+
 ### Configuration:
 Variable                          | Description                                                          | Example                                                              
 --------------------------------- | -------------------------------------------------------------------- | -------------------
