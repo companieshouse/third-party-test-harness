@@ -15,6 +15,7 @@ This is an example application of a third party app gaining an Oauth token and u
 * Entrypoint is http://localhost:8090/login
 * Once every 5 minutes the application attempts a User not present journey with all the users who have logged in, and uses the refresh token if required.
 * For CHS usage, environment variables have already been created internally to run app locally or in team environments
+* Whilst using this app it is only configured to work with HTTP
 
 ### Docker Usage:
 * Ensure that Docker-chs-development is up to date 
