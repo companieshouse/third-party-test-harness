@@ -13,7 +13,9 @@
     <div class="jumbotron jumbotron-fluid">
       <div class="container">
         <h1 class="display-6">Proof of concept application</h1>
-        <p class="lead">Enter the requested scopes you wish to obtain.</p>
+        <p class="lead">Enter the requested scopes you wish to obtain. To file with Companies House you must also obtain the Read User Profile scope.
+          Please request this alongside any of functional scopes you wish to obtain.</p>
+        <p class="lead mt-4">When using multiple scopes please space separate them</p>
       </div>
     </div>
   </div>
@@ -33,7 +35,7 @@
         <label class="font-weight-bold col-form-label-lg" for="requestedScope">Requested
           Scope</label>
         <textarea class="form-control form-control-lg" id="requestedScope"
-                  name="requestedScope"></textarea>
+                  name="requestedScope">https://identity.company-information.service.gov.uk/user/profile.read</textarea>
       </div>
       <button class="btn btn-lg btn-success mt-3 mb-4" type="submit">Continue</button>
     </form>

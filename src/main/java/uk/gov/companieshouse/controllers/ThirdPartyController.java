@@ -2,9 +2,7 @@ package uk.gov.companieshouse.controllers;
 
 import java.io.IOException;
 import java.util.List;
-
 import javax.validation.Valid;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
@@ -15,7 +13,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
 import uk.gov.companieshouse.model.Query;
 import uk.gov.companieshouse.model.Scope;
 import uk.gov.companieshouse.model.User;
@@ -72,6 +69,7 @@ public class ThirdPartyController {
         redirectAttributes.addAttribute("response_type", "code");
         redirectAttributes.addAttribute("client_id", clientId);
         redirectAttributes.addAttribute("redirect_uri", redirectUri);
+
         return "redirect:" + authoriseUri;
     }
 

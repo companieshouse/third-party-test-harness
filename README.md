@@ -1,7 +1,7 @@
 # Third-Party-Test-Harness
 
 ## Description:
-A small Java web application that is used primarily for the use of karate testing and interacting with CHS services. The testing with this harness focuses on obtaining the correct scopes and permissions that are requested via this web application for use of Companies House Enabled API's
+A small Java web application that is used primarily for the use of interacting with CHS services. The testing with this harness focuses on obtaining the correct scopes and permissions that are requested via this web application for use of Companies House Enabled API's
 This is an example application of a third party app gaining an Oauth token and using it for access to APIs and displaying the correct scopes.
 
 ### Requirements:
@@ -13,8 +13,7 @@ This is an example application of a third party app gaining an Oauth token and u
 ### Usage:
 * In application.properties file changes need to be made to environment variables in order to get the application to work locally.
 * Entrypoint is http://localhost:8090/login
-* Once every 5 minutes the application attempts a User not present journey with all the users who have logged in, and uses the refresh token if required.
-* For CHS usage, environment variables have already been created internally to run app locally or in team environments
+* This test harness is built and tested for local use and is not intended to be run in production
 
 ### Docker Usage:
 * Ensure that Docker-chs-development is up to date 
