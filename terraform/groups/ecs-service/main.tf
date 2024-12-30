@@ -43,7 +43,7 @@ module "ecs-service" {
   # Docker container details
   docker_registry   = var.docker_registry
   docker_repo       = local.docker_repo
-  container_version = var.alpha_key_service_version
+  container_version = var.test_harness_service_version
   container_port    = local.container_port
 
   # Service configuration
