@@ -1,0 +1,7 @@
+environment = "staging"
+aws_profile = "staging-eu-west-2"
+
+# Scheduled scaling of tasks
+service_autoscale_enabled  = true
+service_scaledown_schedule = "55 19 * * ? *"
+service_scaleup_schedule   = "5 6 * * ? *"
