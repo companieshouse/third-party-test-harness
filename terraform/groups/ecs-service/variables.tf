@@ -125,9 +125,9 @@ variable "use_set_environment_files" {
   description = "Toggle default global and shared environment files"
 }
 
-variable "alpha_key_service_version" {
+variable "test_harness_service_version" {
   type        = string
-  description = "The version of the alpha-key-service container to run."
+  description = "The version of the test-harness-service container to run."
 }
 
 variable "include_api_filing_public_specs" {
