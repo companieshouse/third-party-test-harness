@@ -14,13 +14,20 @@
     <artifactId>spring-boot-starter-parent</artifactId>
     <groupId>org.springframework.boot</groupId>
     <relativePath/>
-    <version>2.3.5.RELEASE</version> <!-- lookup parent from repository -->
+    <version>3.4.1</version>
   </parent>
 
   <properties>
-    <maven.compiler.source>11</maven.compiler.source>
-    <maven.compiler.target>11</maven.compiler.target>
+    <maven.compiler.source>21</maven.compiler.source>
+    <maven.compiler.target>21</maven.compiler.target>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <thymeleaf-layout-dialect.version>3.3.0</thymeleaf-layout-dialect.version>
+
+    <jquery.version>3.7.1</jquery.version>
+    <popper.js.version>1.14.6</popper.js.version>
+    <spring-cloud-starter-bootstrap.version>4.2.0</spring-cloud-starter-bootstrap.version>
+    <jakarta.validation-api.version>3.1.0</jakarta.validation-api.version>
+    <logback-core.version>1.5.13</logback-core.version>
   </properties>
 
   <build>
@@ -29,22 +36,18 @@
         <artifactId>spring-boot-maven-plugin</artifactId>
         <groupId>org.springframework.boot</groupId>
       </plugin>
-      <plugin>
-        <groupId>com.google.cloud.tools</groupId>
-        <artifactId>jib-maven-plugin</artifactId>
-        <version>2.7.0</version>
-        <configuration>
-            <container>
-                <expandClasspathDependencies>true</expandClasspathDependencies>
-            </container>
-        </configuration>
-        </plugin>
     </plugins>
   </build>
   <dependencies>
     <dependency>
       <artifactId>spring-boot-starter-web</artifactId>
       <groupId>org.springframework.boot</groupId>
+      <exclusions>
+        <exclusion>
+          <groupId>ch.qos.logback</groupId>
+          <artifactId>logback-classic</artifactId>
+        </exclusion>
+      </exclusions>
     </dependency>
 
 
@@ -72,21 +75,21 @@
     <dependency>
       <artifactId>jquery</artifactId>
       <groupId>org.webjars</groupId>
-      <version>3.3.1-2</version>
+      <version>${jquery.version}</version>
     </dependency>
 
     <!-- https://mvnrepository.com/artifact/org.webjars/popper.js -->
     <dependency>
       <artifactId>popper.js</artifactId>
       <groupId>org.webjars</groupId>
-      <version>1.14.6</version>
+      <version>${popper.js.version}</version>
     </dependency>
 
     <!-- https://mvnrepository.com/artifact/org.webjars/bootstrap -->
     <dependency>
-      <artifactId>bootstrap</artifactId>
-      <groupId>org.webjars</groupId>
-      <version>4.3.1</version>
+      <groupId>org.springframework.cloud</groupId>
+      <artifactId>spring-cloud-starter-bootstrap</artifactId>
+      <version>${spring-cloud-starter-bootstrap.version}</version>
     </dependency>
 
     <dependency>
@@ -96,9 +99,15 @@
     </dependency>
 
     <dependency>
-      <artifactId>validation-api</artifactId>
-      <groupId>javax.validation</groupId>
-      <version>2.0.0.Final</version>
+      <groupId>jakarta.validation</groupId>
+      <artifactId>jakarta.validation-api</artifactId>
+      <version>${jakarta.validation-api.version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>ch.qos.logback</groupId>
+      <artifactId>logback-core</artifactId>
+      <version>${logback-core.version}</version>
     </dependency>
 
   </dependencies>
