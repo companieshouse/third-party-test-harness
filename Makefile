@@ -1,5 +1,5 @@
 artifact_name       := third-party-test-harness
-version             := unversioned
+version             := "unversioned"
 
 .PHONY: all
 all: build
@@ -14,9 +14,9 @@ clean:
 
 .PHONY: build
 build:
-	mvn package -DskipTests
-	# Moving JAR to repo root so the path relative to the start script is the same in dev as it is in the build artefact
-	mv ./target/$(artifact_name).jar ./$(artifact_name).jar
+	mvn versions:set -DnewVersion=$(version) -DgenerateBackupPoms=false
+	mvn package -DskipTests=true
+	cp ./target/$(artifact_name)-$(version).jar ./$(artifact_name).jar
 
 .PHONY: test
 test: test-unit
@@ -32,19 +32,15 @@ ifndef version
 endif
 	$(info Packaging version: $(version))
 	mvn versions:set -DnewVersion=$(version) -DgenerateBackupPoms=false
-	mvn --version
-	mvn -X package -DskipTests=true
+	mvn package -DskipTests=true
 	$(eval tmpdir:=$(shell mktemp -d build-XXXXXXXXXX))
-	cp ./target/$(artifact_name).jar $(tmpdir)/$(artifact_name).jar
+	cp ./start.sh $(tmpdir)
+	cp ./target/$(artifact_name)-$(version).jar $(tmpdir)/$(artifact_name).jar
 	cd $(tmpdir); zip -r ../$(artifact_name)-$(version).zip *
 	rm -rf $(tmpdir)
 
 .PHONY: dist
-dist: clean package
-
-.PHONY: publish
-publish:
-	mvn jar:jar deploy:deploy
+dist: clean build package
 
 .PHONY: sonar
 sonar:
