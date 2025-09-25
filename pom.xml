@@ -13,7 +13,8 @@
   <parent>
     <artifactId>companies-house-parent</artifactId>
     <groupId>uk.gov.companieshouse</groupId>
-    <version>2.1.11</version> <!-- lookup parent from repository -->
+    <version>2.1.12</version>
+    <relativePath/>
   </parent>
 
   <properties>
