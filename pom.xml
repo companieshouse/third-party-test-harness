@@ -28,7 +28,7 @@
     <popper.js.version>1.14.6</popper.js.version>
     <spring-cloud-starter-bootstrap.version>4.2.0</spring-cloud-starter-bootstrap.version>
     <jakarta.validation-api.version>3.1.0</jakarta.validation-api.version>
-    <logback-core.version>1.5.13</logback-core.version>
+    <logback-core.version>1.5.19</logback-core.version>
     <start-class>uk.gov.companieshouse.ThirdPartyApplication</start-class>
     <maven-surefire-plugin.version>2.22.2</maven-surefire-plugin.version>
     <maven-compiler-plugin.version>3.8.1</maven-compiler-plugin.version>
